@@ -38,13 +38,19 @@ int LowLevelKeyboardProc_install( )
     return SetWindowsHookEx( WH_KEYBOARD_LL, LowLevelKeyboardProc, GetModuleHandle(NULL), 0 );
 }
 
-int main() {
-    LowLevelKeyboardProc_install();
+int LowLevelKeyboardProc_uninstall( int _hhk )
+{
+    return UnhookWindowsHookEx( _hhk );
+}
+
+MSG Wait_until( ) 
+{
     MSG msg;
-    while( GetMessageA( &msg, NULL, 0, 0 ) )
+    while( GetMessage( &msg, NULL, 0, 0 ) )
     {
         TranslateMessage( &msg );
-        DispatchMessageA( &msg );
-        printf("%d\n", msg.wParam);
+        DispatchMessage( &msg );
+        //printf("%d\n", msg.wParam);
+        return msg;
     }
 }
